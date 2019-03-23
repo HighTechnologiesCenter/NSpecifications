@@ -8,9 +8,18 @@
     <RepositoryUrl>https://github.com/ASbeletsky/NSpecifications</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageId>NSpecification</PackageId>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Description>NSpecification is the most complete library for the Specification pattern and it's grounded on the Domain-Driven Design principles. Provides interface, abstract and a generic specification, composable, supports operators. This is probably the most fluent and least verbose library. Specifications can be composed with real operators (&amp;, |, !, ==, !=). They are interchangeable with Expression&lt;Func&lt;T, bool&gt;&gt; and Func&lt;T, bool&gt; and can be combined directly with boolean expressions. Check the tutorial in the GitHub.</Description>
+    <PackageTags>DDD Specification</PackageTags>
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
