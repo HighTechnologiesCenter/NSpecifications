@@ -39,9 +39,9 @@ namespace NSpecifications
         /// <param name="spec1">Specification</param>
         /// <param name="spec2">Specification</param>
         /// <returns>New specification</returns>
-        public static And<T> operator &(ASpec<T> spec1, ASpec<T> spec2)
+        public static And operator &(ASpec<T> spec1, ASpec<T> spec2)
         {
-            return new And<T>(spec1, spec2);
+            return new And(spec1, spec2);
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace NSpecifications
         /// <param name="spec1">Specification</param>
         /// <param name="spec2">Specification</param>
         /// <returns>New specification</returns>
-        public static Or<T> operator |(ASpec<T> spec1, ASpec<T> spec2)
+        public static Or operator |(ASpec<T> spec1, ASpec<T> spec2)
         {
-            return new Or<T>(spec1, spec2);
+            return new Or(spec1, spec2);
         }
 
         /// <summary>
@@ -108,9 +108,9 @@ namespace NSpecifications
         /// </summary>
         /// <param name="spec">Specification</param>
         /// <returns>New specification</returns>
-        public static Not<T> operator !(ASpec<T> spec)
+        public static Not operator !(ASpec<T> spec)
         {
-            return new Not<T>(spec);
+            return new Not(spec);
         }
 
         /// <summary>
@@ -140,7 +140,18 @@ namespace NSpecifications
             return Expression.ToString();
         }
 
-        public sealed class And<T> : ASpec<T>, IOrSpecification<T>
+        public override bool Equals(object obj)
+        {
+            return obj is ASpec<T> spec &&
+                   EqualityComparer<Expression<Func<T, bool>>>.Default.Equals(Expression, spec.Expression);
+        }
+
+        public override int GetHashCode()
+        {
+            return -1489834557 + EqualityComparer<Expression<Func<T, bool>>>.Default.GetHashCode(Expression);
+        }
+
+        public sealed class And : ASpec<T>, IOrSpecification<T>
         {
             public ASpec<T> Spec1 { get; private set; }
 
@@ -152,14 +163,8 @@ namespace NSpecifications
 
             internal And(ASpec<T> spec1, ASpec<T> spec2)
             {
-                if (spec1 == null)
-                    throw new ArgumentNullException("spec1");
-
-                if (spec2 == null)
-                    throw new ArgumentNullException("spec2");
-
-                Spec1 = spec1;
-                Spec2 = spec2;
+                Spec1 = spec1 ?? throw new ArgumentNullException("spec1");
+                Spec2 = spec2 ?? throw new ArgumentNullException("spec2");
             }
 
             public override Expression<Func<T, bool>> Expression
@@ -173,7 +178,7 @@ namespace NSpecifications
             }
         }
 
-        public sealed class Or<T> : ASpec<T>, IOrSpecification<T>
+        public sealed class Or : ASpec<T>, IOrSpecification<T>
         {
             public ASpec<T> Spec1 { get; private set; }
 
@@ -185,14 +190,8 @@ namespace NSpecifications
 
             internal Or(ASpec<T> spec1, ASpec<T> spec2)
             {
-                if (spec1 == null)
-                    throw new ArgumentNullException("spec1");
-
-                if (spec2 == null)
-                    throw new ArgumentNullException("spec2");
-
-                Spec1 = spec1;
-                Spec2 = spec2;
+                Spec1 = spec1 ?? throw new ArgumentNullException("spec1");
+                Spec2 = spec2 ?? throw new ArgumentNullException("spec2");
             }
 
             public override Expression<Func<T, bool>> Expression
@@ -200,13 +199,13 @@ namespace NSpecifications
                 get { return Spec1.Expression.Or(Spec2.Expression); }
             }
 
-            public new bool Is(T candidate)
+            public bool Is(T candidate)
             {
                 return Spec1.IsSatisfiedBy(candidate) || Spec2.IsSatisfiedBy(candidate);
             }
         }
 
-        public sealed class Not<T> : ASpec<T>, INotSpecification<T>
+        public sealed class Not : ASpec<T>, INotSpecification<T>
         {
             public ASpec<T> Inner { get; private set; }
 
@@ -214,10 +213,7 @@ namespace NSpecifications
 
             internal Not(ASpec<T> spec)
             {
-                if (spec == null)
-                    throw new ArgumentNullException("spec");
-
-                Inner = spec;
+                Inner = spec ?? throw new ArgumentNullException("spec");
             }
 
             public override Expression<Func<T, bool>> Expression
@@ -225,7 +221,7 @@ namespace NSpecifications
                 get { return Inner.Expression.Not(); }
             }
 
-            public new bool Is(T candidate)
+            public bool Is(T candidate)
             {
                 return !Inner.IsSatisfiedBy(candidate);
             }

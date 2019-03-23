@@ -30,7 +30,7 @@ namespace NSpecifications
             get { return Spec1.Expression.Or(Spec2.Expression); }
         }
 
-        public new bool IsSatisfiedBy(TEntity candidate)
+        public bool IsSatisfiedBy(TEntity candidate)
         {
             return Spec1.IsSatisfiedBy(candidate) || Spec2.IsSatisfiedBy(candidate);
         }
