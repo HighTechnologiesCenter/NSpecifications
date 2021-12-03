@@ -7,7 +7,7 @@
     <PackageProjectUrl>https://github.com/ASbeletsky/NSpecifications</PackageProjectUrl>
     <RepositoryUrl>https://github.com/HighTechnologiesCenter/NSpecifications</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageId>NSpecification</PackageId>
+    <PackageId>Htc.NSpecification</PackageId>
     <Authors>HTC</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
