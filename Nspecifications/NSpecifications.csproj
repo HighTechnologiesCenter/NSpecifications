@@ -1,16 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
-    <Copyright>Copyright ©  2019</Copyright>
-    <Version>1.3</Version>
+    <TargetFramework>net5.0</TargetFramework>
+    <Copyright>Copyright ©  2021</Copyright>
+    <Version>1.0</Version>
     <PackageProjectUrl>https://github.com/ASbeletsky/NSpecifications</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/ASbeletsky/NSpecifications</RepositoryUrl>
+    <RepositoryUrl>https://github.com/HighTechnologiesCenter/NSpecifications</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageId>NSpecification</PackageId>
+    <Authors>HTC</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Compile Remove="Properties\**" />
+    <EmbeddedResource Remove="Properties\**" />
+    <None Remove="Properties\**" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

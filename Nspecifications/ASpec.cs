@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 namespace NSpecifications
@@ -24,7 +22,7 @@ namespace NSpecifications
         /// <returns>New specification</returns>
         public virtual bool IsSatisfiedBy(T candidate)
         {
-            _compiledFunc = _compiledFunc ?? this.Expression.Compile();
+            _compiledFunc ??= Expression.Compile();
             return _compiledFunc(candidate);
         }
 
@@ -39,9 +37,9 @@ namespace NSpecifications
         /// <param name="spec1">Specification</param>
         /// <param name="spec2">Specification</param>
         /// <returns>New specification</returns>
-        public static And operator &(ASpec<T> spec1, ASpec<T> spec2)
+        public static ASpec<T> operator &(ASpec<T> spec1, ASpec<T> spec2)
         {
-            return new And(spec1, spec2);
+            return new Spec<T>(spec1.Expression.And(spec2.Expression));
         }
 
         /// <summary>
@@ -50,9 +48,9 @@ namespace NSpecifications
         /// <param name="spec1">Specification</param>
         /// <param name="spec2">Specification</param>
         /// <returns>New specification</returns>
-        public static Or operator |(ASpec<T> spec1, ASpec<T> spec2)
+        public static ASpec<T> operator |(ASpec<T> spec1, ASpec<T> spec2)
         {
-            return new Or(spec1, spec2);
+            return new Spec<T>(spec1.Expression.Or(spec2.Expression));
         }
 
         /// <summary>
@@ -108,9 +106,9 @@ namespace NSpecifications
         /// </summary>
         /// <param name="spec">Specification</param>
         /// <returns>New specification</returns>
-        public static Not operator !(ASpec<T> spec)
+        public static ASpec<T> operator !(ASpec<T> spec)
         {
-            return new Not(spec);
+            return new Spec<T>(spec.Expression.Not());
         }
 
         /// <summary>
@@ -151,80 +149,6 @@ namespace NSpecifications
             return -1489834557 + EqualityComparer<Expression<Func<T, bool>>>.Default.GetHashCode(Expression);
         }
 
-        public sealed class And : ASpec<T>, IOrSpecification<T>
-        {
-            public ASpec<T> Spec1 { get; private set; }
-
-            public ASpec<T> Spec2 { get; private set; }
-
-            ISpecification<T> IOrSpecification<T>.Spec1 { get { return Spec1; } }
-
-            ISpecification<T> IOrSpecification<T>.Spec2 { get { return Spec1; } }
-
-            internal And(ASpec<T> spec1, ASpec<T> spec2)
-            {
-                Spec1 = spec1 ?? throw new ArgumentNullException("spec1");
-                Spec2 = spec2 ?? throw new ArgumentNullException("spec2");
-            }
-
-            public override Expression<Func<T, bool>> Expression
-            {
-                get { return Spec1.Expression.And(Spec2.Expression); }
-            }
-
-            public new bool IsSatisfiedBy(T candidate)
-            {
-                return Spec1.IsSatisfiedBy(candidate) && Spec2.IsSatisfiedBy(candidate);
-            }
-        }
-
-        public sealed class Or : ASpec<T>, IOrSpecification<T>
-        {
-            public ASpec<T> Spec1 { get; private set; }
-
-            public ASpec<T> Spec2 { get; private set; }
-
-            ISpecification<T> IOrSpecification<T>.Spec1 { get { return Spec1; } }
-
-            ISpecification<T> IOrSpecification<T>.Spec2 { get { return Spec1; } }
-
-            internal Or(ASpec<T> spec1, ASpec<T> spec2)
-            {
-                Spec1 = spec1 ?? throw new ArgumentNullException("spec1");
-                Spec2 = spec2 ?? throw new ArgumentNullException("spec2");
-            }
-
-            public override Expression<Func<T, bool>> Expression
-            {
-                get { return Spec1.Expression.Or(Spec2.Expression); }
-            }
-
-            public bool Is(T candidate)
-            {
-                return Spec1.IsSatisfiedBy(candidate) || Spec2.IsSatisfiedBy(candidate);
-            }
-        }
-
-        public sealed class Not : ASpec<T>, INotSpecification<T>
-        {
-            public ASpec<T> Inner { get; private set; }
-
-            ISpecification<T> INotSpecification<T>.Inner { get { return Inner; } }
-
-            internal Not(ASpec<T> spec)
-            {
-                Inner = spec ?? throw new ArgumentNullException("spec");
-            }
-
-            public override Expression<Func<T, bool>> Expression
-            {
-                get { return Inner.Expression.Not(); }
-            }
-
-            public bool Is(T candidate)
-            {
-                return !Inner.IsSatisfiedBy(candidate);
-            }
-        }
+        LambdaExpression ISpecification.Expression => Expression;
     }
 }
