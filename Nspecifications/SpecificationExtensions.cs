@@ -6,7 +6,7 @@ namespace NSpecifications
     /// <summary>
     /// Extensions that facilitates the usage of ISpecifications.
     /// </summary>
-    public static class ISpecificationExtensions
+    public static class SpecificationExtensions
     {
         /// <summary>
         /// Checks if a certain candidate meets a given specification.
@@ -35,9 +35,9 @@ namespace NSpecifications
         /// <param name="spec1"></param>
         /// <param name="spec2"></param>
         /// <returns></returns>
-        public static IAndSpecification<T> And<T>(this ISpecification<T> spec1, ISpecification<T> spec2)
+        public static ISpecification<T> And<T>(this ISpecification<T> spec1, ISpecification<T> spec2)
         {
-            return new AndSpecification<T>(spec1, spec2);
+            return new Spec<T>(spec1.Expression.And(spec2.Expression));
         }
 
         /// <summary>
@@ -47,9 +47,9 @@ namespace NSpecifications
         /// <param name="spec1"></param>
         /// <param name="spec2"></param>
         /// <returns></returns>
-        public static IOrSpecification<T> Or<T>(this ISpecification<T> spec1, ISpecification<T> spec2)
+        public static ISpecification<T> Or<T>(this ISpecification<T> spec1, ISpecification<T> spec2)
         {
-            return new OrSpecification<T>(spec1, spec2);
+            return new Spec<T>(spec1.Expression.Or(spec2.Expression));
         }
 
         /// <summary>
@@ -58,9 +58,9 @@ namespace NSpecifications
         /// <typeparam name="T">Candidate type</typeparam>
         /// <param name="inner">Inner specification</param>
         /// <returns></returns>
-        public static INotSpecification<T> Not<T>(this ISpecification<T> inner)
+        public static ISpecification<T> Not<T>(this ISpecification<T> inner)
         {
-            return new NotSpecification<T>(inner);
+            return new Spec<T>(inner.Expression.Not());
         }
     }
 }
