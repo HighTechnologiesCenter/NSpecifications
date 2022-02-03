@@ -1,1 +1,25 @@
+name: Deploy to Nuget
 
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - id: get_version
+      uses: battila7/get-version-action@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Restore dependencies
+      run: dotnet restore src/Nspecifications/NSpecifications.csproj
+    - name: Pack
+      run: dotnet pack src/Nspecifications/NSpecifications.csproj --no-restore --configuration Release -p:PackageVersion=${{ steps.get_version.outputs.version-without-v }}
+    - name: Deploy
+      run: dotnet nuget push "src/Nspecifications/bin/Release/Htc.EfCoreExtensions.${{ steps.get_version.outputs.version-without-v }}.nupkg"  --api-key ${{secrets.NUGET_API_KEY}} --source "https://api.nuget.org/v3/index.json"
