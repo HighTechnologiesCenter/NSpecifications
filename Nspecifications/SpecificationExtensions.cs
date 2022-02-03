@@ -12,6 +12,7 @@ namespace NSpecifications
         /// Checks if a certain candidate meets a given specification.
         /// </summary>
         /// <param name="candidate"></param>
+        /// <param name="spec"> Спецификация. </param>
         /// <returns>New specification</returns>
         public static bool Is<T>(this T candidate, ISpecification<T> spec)
         {
@@ -22,6 +23,7 @@ namespace NSpecifications
         /// Checks if a certain collection of candidates meets a given specification.
         /// </summary>
         /// <param name="candidates">Candidates</param>
+        /// <param name="spec"> Спецификация. </param>
         /// <returns>New specification</returns>
         public static  bool Are<T>(this IEnumerable<T> candidates, ISpecification<T> spec)
         {
