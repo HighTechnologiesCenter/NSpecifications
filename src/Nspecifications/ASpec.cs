@@ -13,7 +13,7 @@ namespace NSpecifications
         /// <summary>
         /// Holds the compiled expression so that it doesn't need to compile it everytime.
         /// </summary>
-        Func<T, bool> _compiledFunc;
+        Func<T, bool>? _compiledFunc;
 
         /// <summary>
         /// Checks if a certain candidate meets a given specification.
@@ -138,7 +138,7 @@ namespace NSpecifications
             return Expression.ToString();
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             return obj is ASpec<T> spec &&
                    EqualityComparer<Expression<Func<T, bool>>>.Default.Equals(Expression, spec.Expression);
