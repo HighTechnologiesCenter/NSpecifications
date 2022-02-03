@@ -3,13 +3,5 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <Copyright>Copyright ©  2021</Copyright>
-    <Version>1.0</Version>
-    <PackageProjectUrl>https://github.com/ASbeletsky/NSpecifications</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/HighTechnologiesCenter/NSpecifications</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageId>Htc.NSpecification</PackageId>
-    <Authors>HTC</Authors>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 </Project>
